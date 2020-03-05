@@ -3,8 +3,8 @@
     <input
       type="checkbox"
       :id="idProp"
-      :value="idProp"
-      v-model="checkedInput"
+      :checked="valueProp"
+      @change="valueCheck"
       class=" checkBox__input">
     <label
       :for="idProp"
@@ -14,6 +14,8 @@
     </label>
   </div>
 </template>
+//:value="idProp"
+//v-model="checkedInput"
 
 <script>
 export default {
@@ -26,22 +28,38 @@ export default {
     idProp: {
       type: String,
       default: 'no-id'
+    },
+    valueProp: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
       // id: null
+      checked: false
     }
   },
   computed: {
     checkedInput: {
       get () {
-        return this.$store.state.dropdown.filterBy
+        // return this.$store.state.dropdown.filterBy
+        return []
       },
       set (value) {
-        this.$store.commit('updateFilterValues', value)
-        this.$store.commit('updateselectedCount')
+        // this.$store.commit('updateFilterValues', value)
+        // this.$store.commit('updateselectedCount')
+        this.$emit('checkBoxInput', value)
       }
+    }
+  },
+  methods: {
+    valueCheck (e) {
+      console.log(e.target.checked, this.idProp)
+      this.$emit('checkBoxInput', {
+        id: this.idProp,
+        value: e.target.checked
+      })
     }
   }
 }

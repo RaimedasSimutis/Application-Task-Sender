@@ -3,6 +3,7 @@
     <Dropdown
       :content="this.$store.state.dropdown.content"
       :title="this.$store.state.dropdown.title"
+      @dropdownCheckUpdate="this.updateDropdownData"
     />
     <!-- {{this.$store.state.dropdown.filterBy}}
     {{ this.$store.state.dropdown.selectedCount }} -->
@@ -12,13 +13,20 @@
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 import Dropdown from './components/Dropdown'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     Dropdown
+  },
+  methods: {
+    ...mapMutations({
+      updateDropdownData: 'updateDropdownData'
+    })
   }
 }
+
 </script>
 
 <style lang="scss">

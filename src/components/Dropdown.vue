@@ -3,18 +3,21 @@
     <button class="dropdown__button" @click="togleDropdown">
       <div class="dropdown__button-title">{{title}}</div>
       <div class="dropdown__button-active-selections" :class="activeSelectionsStyle">
-        {{getSelectedCount}}
+        {{calcSelectedTags}}
       </div>
       <img class="dropdown__button-icon" src="../assets/arrow-down.png" alt="dropdown-icon">
     </button>
      <transition name="fade">
-      <div  class="dropdown__menu" v-show="this.$store.state.dropdown.isActive">
+      <div  class="dropdown__menu" v-show="this.isActive">
         <BaseCheckInput
           v-for="(item) in content"
           :key="item.id"
           :titleProp="item.title"
           :idProp="item.id"
-          class="dropdown__menu-item"/>
+          :valueProp="item.isSelected"
+          class="dropdown__menu-item"
+          @checkBoxInput="inputChecked"
+        />
         <!-- <div :id="id" v-for="(item, index) in content" :key="item" class="dropdown__menu-item">
           <input type="checkbox"  :id="index" :value="item" v-model="checkedInput" class="dropdown__menu-item-input">
           <label :for="index" class="dropdown__menu-item-label">{{item}}</label>
@@ -26,7 +29,6 @@
 
 <script>
 
-import { mapGetters, mapMutations } from 'vuex'
 import BaseCheckInput from './BaseCheckInput'
 
 export default {
@@ -36,13 +38,14 @@ export default {
   },
   data () {
     return {
-      // id: null
+      isActive: false,
+      selectedTagCount: 0
     }
   },
   props: {
     content: {
       type: Array,
-      default: () => ['asd', 'qwe', 'zxc']
+      default: () => []
     },
     title: {
       type: String,
@@ -50,36 +53,31 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      getSelectedCount: 'getSelectedCount'
-    }),
-    // id () {
-    //   // return `text-field-${this._uid}`
-    //   return `check-input-${Math.floor(Math.random() * 1000)}`
-    // },
-    checkedInput: {
-      get () {
-        return this.$store.state.dropdown.filterBy
-      },
-      set (value) {
-        this.$store.commit('updateFilterValues', value)
-        this.$store.commit('updateselectedCount')
-      }
+    calcSelectedTags () {
+      let cnt = 0
+      this.content.forEach(el => {
+        if (el.isSelected) {
+          cnt += 1
+        }
+      })
+      this.updateSelectedTagCount(cnt)
+      return cnt
     },
     activeSelectionsStyle () {
-      return this.getSelectedCount > 0 ? 'dropdown__button-active-selections--neutral' : 'dropdown__button-active-selections--warning'
-    },
-    menuActive () {
-      return this.$store.state.dropdown.isActive
+      return this.selectedTagCount > 0 ? 'dropdown__button-active-selections--neutral' : 'dropdown__button-active-selections--warning'
     }
   },
   methods: {
-    ...mapMutations({
-      updateFilterBy: 'updateFilterBy'
-    }),
+    inputChecked (val) {
+      console.log('valueasad', val)
+      this.$emit('dropdownCheckUpdate', val)
+    },
+    updateSelectedTagCount (counterValue) {
+      this.selectedTagCount = counterValue
+    },
     togleDropdown () {
-      this.$store.commit('toggleDropdownStatus')
-      if (this.$store.state.dropdown.isActive) {
+      this.isActive = !this.isActive
+      if (this.isActive) {
         document.addEventListener('click', this.closeDropdown)
       } else {
         document.removeEventListener('click', this.closeDropdown)
@@ -88,17 +86,11 @@ export default {
     closeDropdown (e) {
       // close dropdown menu if clicked outside
       if (!this.$el.contains(e.target)) {
-        this.$store.commit('toggleDropdownStatus')
+        this.isActive = false
         document.removeEventListener('click', this.closeDropdown)
       }
     }
   }
-  // mounted () {
-  //   document.addEventListener('click', this.close)
-  // },
-  // beforeDestroy () {
-  //   document.removeEventListener('click', this.close)
-  // }
 }
 
 </script>
@@ -122,8 +114,7 @@ export default {
       display: flex;
       align-items: center;
       outline-color: #FE9723;
-
-      }
+    }
 
     &__button-title {
       color: #565656;
@@ -132,15 +123,10 @@ export default {
     }
 
     &__button-active-selections {
-      // width: 17px;
-      // height: 18px;
       padding: 2px 5px;
-
       color: #ffffff;
-      // border: 1px solid #565656;
       border-radius: 2px;
       display: inline-block;
-      // margin:auto
 
       &--neutral {
         background: #565656;
@@ -155,7 +141,6 @@ export default {
       width: 10px;
       margin-left: 10px;
       filter: invert(31%) sepia(0%) saturate(2499%) hue-rotate(316deg) brightness(100%) contrast(89%);
-
     }
 
     &__menu {
@@ -168,10 +153,8 @@ export default {
       border-radius: 5px;
       display: flex;
       flex-direction: column;
-      // transform-origin: center center;
       left: 50%;
       transform: translate(-50%, 0);
-
     }
 
     &__menu-item {

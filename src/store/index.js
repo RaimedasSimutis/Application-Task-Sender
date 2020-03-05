@@ -10,25 +10,29 @@ export default new Vuex.Store({
       content: [
         {
           id: '1a',
-          title: 'Customers'
+          title: 'Customers',
+          isSelected: true
         },
         {
           id: '2b',
-          title: 'VIP'
+          title: 'VIP',
+          isSelected: false
         },
         {
           id: '3c',
-          title: 'Oldtimer'
+          title: 'Oldtimer',
+          isSelected: false
         },
         {
           id: '4d',
-          title: 'Remove'
+          title: 'Remove',
+          isSelected: false
         }
       ],
       filterBy: [],
       title: 'Tag',
-      selectedCount: 0,
-      isActive: false
+      selectedCount: 0
+      // isActive: false
     }
   }),
   getters: {
@@ -46,15 +50,27 @@ export default new Vuex.Store({
     updateselectedCount (state) {
       state.dropdown.selectedCount = state.dropdown.filterBy.length
     },
-    toggleDropdownStatus (state) {
-      state.dropdown.isActive = !state.dropdown.isActive
+    updateDropdownData (state, payload) {
+      // console.log('hahahahahahaha', payload)
+      state.dropdown.content.forEach(el => {
+        if (el.id === payload.id) {
+          el.isSelected = payload.value
+          console.log('data edited')
+        }
+      })
+      console.log(state.dropdown.content)
     }
+
+    // toggleDropdownStatus (state) {
+    //   state.dropdown.isActive = !state.dropdown.isActive
+    // }
   },
   actions: {
     calcSelectedFields ({ commit, state }) {
       console.log(state.dropdown.length)
       commit('updateselectedCount', state.dropdown.length)
     }
+
   },
   modules: {
   }
