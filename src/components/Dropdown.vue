@@ -15,13 +15,11 @@
           :titleProp="item.title"
           :idProp="item.id"
           :valueProp="item.isSelected"
+          :parentId="dropdownId"
           class="dropdown__menu-item"
-          @checkBoxInput="inputChecked"
+          @[inputEventHandler]="inputChecked"
+
         />
-        <!-- <div :id="id" v-for="(item, index) in content" :key="item" class="dropdown__menu-item">
-          <input type="checkbox"  :id="index" :value="item" v-model="checkedInput" class="dropdown__menu-item-input">
-          <label :for="index" class="dropdown__menu-item-label">{{item}}</label>
-        </div> -->
       </div>
     </transition>
   </div>
@@ -50,9 +48,16 @@ export default {
     title: {
       type: String,
       default: 'unnamed'
+    },
+    dropdownId: {
+      type: String,
+      default: 'no-id'
     }
   },
   computed: {
+    inputEventHandler () {
+      return `checkBoxInput-${this.dropdownId}`
+    },
     calcSelectedTags () {
       let cnt = 0
       this.content.forEach(el => {
@@ -69,8 +74,8 @@ export default {
   },
   methods: {
     inputChecked (val) {
-      console.log('valueasad', val)
-      this.$emit('dropdownCheckUpdate', val)
+      console.log('pagavau inputa', val, this.dropdownId)
+      this.$emit(`dropdownCheckUpdate-${this.dropdownId}`, val)
     },
     updateSelectedTagCount (counterValue) {
       this.selectedTagCount = counterValue
@@ -84,7 +89,6 @@ export default {
       }
     },
     closeDropdown (e) {
-      // close dropdown menu if clicked outside
       if (!this.$el.contains(e.target)) {
         this.isActive = false
         document.removeEventListener('click', this.closeDropdown)
@@ -104,9 +108,7 @@ export default {
 
     &__button {
       padding: 0 10px;
-      // text-align: center;
       background: #EDEDED;
-      // width: 91px;
       height: 30px;
       border: none;
       border-radius: 5px;
@@ -155,6 +157,7 @@ export default {
       flex-direction: column;
       left: 50%;
       transform: translate(-50%, 0);
+      box-shadow: 0px 0px 3px 0px #DCDCDC;
     }
 
     &__menu-item {
@@ -182,7 +185,7 @@ export default {
     transition: opacity .3s;
   }
 
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  .fade-enter, .fade-leave-to {
     opacity: 0;
   }
 

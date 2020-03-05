@@ -7,6 +7,7 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV === 'development',
   state: () => ({
     dropdown: {
+      id: '1',
       content: [
         {
           id: '1a',
@@ -29,10 +30,33 @@ export default new Vuex.Store({
           isSelected: false
         }
       ],
-      filterBy: [],
-      title: 'Tag',
-      selectedCount: 0
-      // isActive: false
+      title: 'Tag'
+    },
+    dropdownTwo: {
+      id: '2',
+      content: [
+        {
+          id: '1aa',
+          title: 'Pirmas',
+          isSelected: true
+        },
+        {
+          id: '2bb',
+          title: 'Antras',
+          isSelected: false
+        },
+        {
+          id: '3cc',
+          title: 'Trecias',
+          isSelected: false
+        },
+        {
+          id: '4dd',
+          title: 'Ketvirtas',
+          isSelected: false
+        }
+      ],
+      title: 'Tag2'
     }
   }),
   getters: {
@@ -51,25 +75,27 @@ export default new Vuex.Store({
       state.dropdown.selectedCount = state.dropdown.filterBy.length
     },
     updateDropdownData (state, payload) {
-      // console.log('hahahahahahaha', payload)
+      console.log('pirmas Updated')
       state.dropdown.content.forEach(el => {
         if (el.id === payload.id) {
           el.isSelected = payload.value
-          console.log('data edited')
         }
       })
-      console.log(state.dropdown.content)
+    },
+    updateDropdownTwoData (state, payload) {
+      console.log('antras Updated')
+      state.dropdownTwo.content.forEach(el => {
+        if (el.id === payload.id) {
+          el.isSelected = payload.value
+        }
+      })
     }
-
-    // toggleDropdownStatus (state) {
-    //   state.dropdown.isActive = !state.dropdown.isActive
-    // }
   },
   actions: {
-    calcSelectedFields ({ commit, state }) {
-      console.log(state.dropdown.length)
-      commit('updateselectedCount', state.dropdown.length)
-    }
+    // calcSelectedFields ({ commit, state }) {
+    //   console.log(state.dropdown.length)
+    //   commit('updateselectedCount', state.dropdown.length)
+    // }
 
   },
   modules: {

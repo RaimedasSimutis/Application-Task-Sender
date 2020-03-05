@@ -3,15 +3,22 @@
     <Dropdown
       :content="this.$store.state.dropdown.content"
       :title="this.$store.state.dropdown.title"
-      @dropdownCheckUpdate="this.updateDropdownData"
+      :dropdownId="this.$store.state.dropdown.id"
+      class="dropdown"
+      @[dropdownEventHandler]="updateDropdownData"
     />
-    <!-- {{this.$store.state.dropdown.filterBy}}
-    {{ this.$store.state.dropdown.selectedCount }} -->
+    <Dropdown
+      :content="this.$store.state.dropdownTwo.content"
+      :title="this.$store.state.dropdownTwo.title"
+      :dropdownId="this.$store.state.dropdownTwo.id"
+      class="dropdown"
+      @[dropdownEventHandler2]="updateDropdownTwoData"
+    />
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+
 import Dropdown from './components/Dropdown'
 import { mapMutations } from 'vuex'
 
@@ -20,9 +27,18 @@ export default {
   components: {
     Dropdown
   },
+  computed: {
+    dropdownEventHandler () {
+      return `dropdownCheckUpdate-${this.$store.state.dropdown.id}`
+    },
+    dropdownEventHandler2 () {
+      return `dropdownCheckUpdate-${this.$store.state.dropdownTwo.id}`
+    }
+  },
   methods: {
     ...mapMutations({
-      updateDropdownData: 'updateDropdownData'
+      updateDropdownData: 'updateDropdownData',
+      updateDropdownTwoData: 'updateDropdownTwoData'
     })
   }
 }
@@ -34,16 +50,20 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  // text-align: center;
   color: black;
   margin-top: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .dropdown {
+    margin: 0 70px
+  }
+
 }
 
 body {
   background: #ffffff;
-
 }
+
 </style>

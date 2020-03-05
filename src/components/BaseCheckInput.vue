@@ -14,8 +14,6 @@
     </label>
   </div>
 </template>
-//:value="idProp"
-//v-model="checkedInput"
 
 <script>
 export default {
@@ -32,31 +30,20 @@ export default {
     valueProp: {
       type: Boolean,
       default: false
+    },
+    parentId: {
+      type: String,
+      default: 'no-id'
     }
   },
   data () {
     return {
-      // id: null
-      checked: false
-    }
-  },
-  computed: {
-    checkedInput: {
-      get () {
-        // return this.$store.state.dropdown.filterBy
-        return []
-      },
-      set (value) {
-        // this.$store.commit('updateFilterValues', value)
-        // this.$store.commit('updateselectedCount')
-        this.$emit('checkBoxInput', value)
-      }
+      // checked: false
     }
   },
   methods: {
     valueCheck (e) {
-      console.log(e.target.checked, this.idProp)
-      this.$emit('checkBoxInput', {
+      this.$emit(`checkBoxInput-${this.parentId}`, {
         id: this.idProp,
         value: e.target.checked
       })
@@ -100,7 +87,6 @@ export default {
         display: inline-block;
         height: 18px;
         width: 18px;
-
         border: 1px solid #DCDCDC;
         border-radius: 5px;
         position: absolute;
@@ -119,7 +105,6 @@ export default {
         position: absolute;
         left: 21px;
         top: 18px;
-
       }
     }
   }
