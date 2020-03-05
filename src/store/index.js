@@ -73,7 +73,6 @@ export default new Vuex.Store({
     },
     // if dropdown no 2 change is catched, update data in vuex store
     updateDropdownTwoData (state, payload) {
-      console.log('antras Updated')
       state.dropdownTwo.content.forEach(el => {
         if (el.id === payload.id) {
           el.isSelected = payload.value
