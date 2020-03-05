@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  // throw erro if Vuex state is mutated outside of mutation handlers
   strict: process.env.NODE_ENV === 'development',
   state: () => ({
     dropdown: {
@@ -60,28 +61,17 @@ export default new Vuex.Store({
     }
   }),
   getters: {
-    getSelectedCount: state => {
-      return state.dropdown.selectedCount
-    }
   },
   mutations: {
-    updateFilterBy (state, payload) {
-      state.dropdown.filterBy = payload
-    },
-    updateFilterValues (state, value) {
-      state.dropdown.filterBy = value
-    },
-    updateselectedCount (state) {
-      state.dropdown.selectedCount = state.dropdown.filterBy.length
-    },
+    // if dropdown change is catched, update data in vuex store
     updateDropdownData (state, payload) {
-      console.log('pirmas Updated')
       state.dropdown.content.forEach(el => {
         if (el.id === payload.id) {
           el.isSelected = payload.value
         }
       })
     },
+    // if dropdown no 2 change is catched, update data in vuex store
     updateDropdownTwoData (state, payload) {
       console.log('antras Updated')
       state.dropdownTwo.content.forEach(el => {
@@ -92,11 +82,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    // calcSelectedFields ({ commit, state }) {
-    //   console.log(state.dropdown.length)
-    //   commit('updateselectedCount', state.dropdown.length)
-    // }
-
   },
   modules: {
   }

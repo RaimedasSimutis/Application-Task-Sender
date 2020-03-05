@@ -18,7 +18,6 @@
           :parentId="dropdownId"
           class="dropdown__menu-item"
           @[inputEventHandler]="inputChecked"
-
         />
       </div>
     </transition>
@@ -41,23 +40,28 @@ export default {
     }
   },
   props: {
+    // array with dropdown options
     content: {
       type: Array,
       default: () => []
     },
+    // dropdown title
     title: {
       type: String,
       default: 'unnamed'
     },
+    // dopdown id
     dropdownId: {
       type: String,
       default: 'no-id'
     }
   },
   computed: {
+    // computed property to edit event name
     inputEventHandler () {
       return `checkBoxInput-${this.dropdownId}`
     },
+    // computed property to calculate selected tags
     calcSelectedTags () {
       let cnt = 0
       this.content.forEach(el => {
@@ -68,18 +72,21 @@ export default {
       this.updateSelectedTagCount(cnt)
       return cnt
     },
+    // computed property to change selected tags container color
     activeSelectionsStyle () {
       return this.selectedTagCount > 0 ? 'dropdown__button-active-selections--neutral' : 'dropdown__button-active-selections--warning'
     }
   },
   methods: {
+    // emit event if input change is captured
     inputChecked (val) {
-      console.log('pagavau inputa', val, this.dropdownId)
       this.$emit(`dropdownCheckUpdate-${this.dropdownId}`, val)
     },
+    //
     updateSelectedTagCount (counterValue) {
       this.selectedTagCount = counterValue
     },
+    // change activity status of dropdown
     togleDropdown () {
       this.isActive = !this.isActive
       if (this.isActive) {
@@ -88,6 +95,7 @@ export default {
         document.removeEventListener('click', this.closeDropdown)
       }
     },
+    // check if click was detected outside dropdown
     closeDropdown (e) {
       if (!this.$el.contains(e.target)) {
         this.isActive = false
@@ -158,26 +166,6 @@ export default {
       left: 50%;
       transform: translate(-50%, 0);
       box-shadow: 0px 0px 3px 0px #DCDCDC;
-    }
-
-    &__menu-item {
-      border-bottom: 1px solid #DCDCDC;
-      white-space: nowrap;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-
-    &__menu-item-input {
-      margin: 12px 9px 11px 16px;
-    }
-
-    &__menu-item-label {
-      font-size: 12px;
     }
   }
 

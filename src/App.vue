@@ -28,9 +28,11 @@ export default {
     Dropdown
   },
   computed: {
+    // computed property to edit event name
     dropdownEventHandler () {
       return `dropdownCheckUpdate-${this.$store.state.dropdown.id}`
     },
+    // computed property to edit event name
     dropdownEventHandler2 () {
       return `dropdownCheckUpdate-${this.$store.state.dropdownTwo.id}`
     }
@@ -59,7 +61,6 @@ export default {
   .dropdown {
     margin: 0 70px
   }
-
 }
 
 body {

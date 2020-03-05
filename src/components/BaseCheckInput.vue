@@ -1,14 +1,14 @@
 <template>
-  <div class=" checkBox">
+  <div class="checkBox">
     <input
       type="checkbox"
       :id="idProp"
       :checked="valueProp"
       @change="valueCheck"
-      class=" checkBox__input">
+      class="checkBox__input">
     <label
       :for="idProp"
-      class=" checkBox__label"
+      class="checkBox__label"
     >
       {{titleProp}}
     </label>
@@ -36,12 +36,8 @@ export default {
       default: 'no-id'
     }
   },
-  data () {
-    return {
-      // checked: false
-    }
-  },
   methods: {
+    // emit event with parent element id if chechbox is selected
     valueCheck (e) {
       this.$emit(`checkBoxInput-${this.parentId}`, {
         id: this.idProp,
