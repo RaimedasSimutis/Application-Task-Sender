@@ -1,4 +1,8 @@
-# sender
+# Application task for Sender: dropdown menu
+## Intro
+
+You can try live demonstration [HERE](https://application-task-sender.now.sh/).
+
 
 ## Project setup
 ```
