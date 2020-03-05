@@ -1,17 +1,22 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Dropdown
+      :content="this.$store.state.dropdown.content"
+      :title="this.$store.state.dropdown.title"
+    />
+    <!-- {{this.$store.state.dropdown.filterBy}}
+    {{ this.$store.state.dropdown.selectedCount }} -->
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
+import Dropdown from './components/Dropdown'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Dropdown
   }
 }
 </script>
@@ -21,8 +26,16 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  // text-align: center;
+  color: black;
   margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  background: #ffffff;
+
 }
 </style>
